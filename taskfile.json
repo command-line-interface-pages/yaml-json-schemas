@@ -16,6 +16,51 @@
             "properties": {
                 "version": {
                     "$ref": "#/definitions/version-property"
+                },
+                "expansions": {
+                    "description": "An expansion count",
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 2
+                },
+                "vars": {
+                    "title": "variables",
+                    "description": "Variables",
+                    "type": "object",
+                    "patternProperties": {
+                        ".": {
+                            "description": "A variable",
+                            "type": ["boolean", "integer", "null", "number", "string"],
+                            "examples": ["Hello, world!"]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "tasks": {
+                    "title": "tasks",
+                    "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-20",
+                    "type": "object",
+                    "patternProperties": {
+                        ".": {
+                            "title": "task",
+                            "description": "A task",
+                            "type": "object",
+                            "properties": {
+                                "cmds": {
+                                    "description": "Task commands",
+                                    "type": "array",
+                                    "items": {
+                                        "description": "A task command",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "examples": ["echo \"Hello, world!\""]
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
                 }
             },
             "additionalProperties": false
