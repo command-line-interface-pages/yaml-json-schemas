@@ -12,55 +12,74 @@
                 "3"
             ]
         },
+        "v2-expansions-property": {
+            "description": "An expansion count\nhttps://taskfile.dev/taskfile-versions/#version-20",
+            "type": "integer",
+            "minimum": 1,
+            "default": 2
+        },
+        "v2-vars-property": {
+            "title": "variables",
+            "description": "Variables\nhttps://taskfile.dev/taskfile-versions/#version-20",
+            "type": "object",
+            "patternProperties": {
+                ".": {
+                    "description": "A variable\nhttps://taskfile.dev/taskfile-versions/#version-20",
+                    "type": [
+                        "boolean",
+                        "integer",
+                        "null",
+                        "number",
+                        "string"
+                    ],
+                    "examples": [
+                        "Hello, world!"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "v2-tasks-property": {
+            "title": "tasks",
+            "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-20",
+            "type": "object",
+            "patternProperties": {
+                ".": {
+                    "title": "task",
+                    "description": "A task",
+                    "type": "object",
+                    "properties": {
+                        "cmds": {
+                            "description": "Task commands",
+                            "type": "array",
+                            "items": {
+                                "description": "A task command",
+                                "type": "string",
+                                "minLength": 1,
+                                "examples": [
+                                    "echo \"Hello, world!\""
+                                ]
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
         "v2-properties": {
             "properties": {
                 "version": {
                     "$ref": "#/definitions/version-property"
                 },
                 "expansions": {
-                    "description": "An expansion count",
-                    "type": "integer",
-                    "minimum": 1,
-                    "default": 2
+                    "$ref": "#/definitions/v2-expansions-property"
                 },
                 "vars": {
-                    "title": "variables",
-                    "description": "Variables",
-                    "type": "object",
-                    "patternProperties": {
-                        ".": {
-                            "description": "A variable",
-                            "type": ["boolean", "integer", "null", "number", "string"],
-                            "examples": ["Hello, world!"]
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/v2-vars-property"
                 },
                 "tasks": {
-                    "title": "tasks",
-                    "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-20",
-                    "type": "object",
-                    "patternProperties": {
-                        ".": {
-                            "title": "task",
-                            "description": "A task",
-                            "type": "object",
-                            "properties": {
-                                "cmds": {
-                                    "description": "Task commands",
-                                    "type": "array",
-                                    "items": {
-                                        "description": "A task command",
-                                        "type": "string",
-                                        "minLength": 1,
-                                        "examples": ["echo \"Hello, world!\""]
-                                    }
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/v2-tasks-property"
                 }
             },
             "additionalProperties": false
@@ -69,6 +88,69 @@
             "properties": {
                 "version": {
                     "$ref": "#/definitions/version-property"
+                },
+                "expansions": {
+                    "$ref": "#/definitions/v2-expansions-property"
+                },
+                "vars": {
+                    "$ref": "#/definitions/v2-vars-property"
+                },
+                "tasks": {
+                    "title": "tasks",
+                    "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                    "type": "object",
+                    "patternProperties": {
+                        ".": {
+                            "title": "task",
+                            "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "object",
+                            "properties": {
+                                "cmds": {
+                                    "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "command",
+                                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "minLength": 1
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cmd": {
+                                                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                                        "type": "string",
+                                                        "examples": ["echo \"Hello, world!\""]
+                                                    },
+                                                    "ignore_error": {
+                                                        "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                                        "type": "boolean",
+                                                        "default": false
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "examples": [
+                                            "echo \"Hello, world!\""
+                                        ]
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "output": {
+                    "description": "An output style\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                    "type": "string",
+                    "enum": [
+                        "interleaved",
+                        "group",
+                        "prefixed"
+                    ]
                 }
             },
             "additionalProperties": false
