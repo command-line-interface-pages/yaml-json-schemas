@@ -163,6 +163,21 @@
             },
             "additionalProperties": false
         },
+        "v2.2-includes-property": {
+            "title": "includes",
+            "description": "Includes\nhttps://taskfile.dev/taskfile-versions/#version-22",
+            "type": "object",
+            "patternProperties": {
+                ".": {
+                    "description": "An include\nhttps://taskfile.dev/taskfile-versions/#version-22",
+                    "type": "string",
+                    "examples": [
+                        "./documentation"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
         "v2.2-properties": {
             "properties": {
                 "version": {
@@ -181,19 +196,7 @@
                     "$ref": "#/definitions/v2.1-output-property"
                 },
                 "includes": {
-                    "title": "includes",
-                    "description": "Includes\nhttps://taskfile.dev/taskfile-versions/#version-22",
-                    "type": "object",
-                    "patternProperties": {
-                        ".": {
-                            "description": "An include\nhttps://taskfile.dev/taskfile-versions/#version-22",
-                            "type": "string",
-                            "examples": [
-                                "./documentation"
-                            ]
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/v2.2-includes-property"
                 }
             },
             "additionalProperties": false
@@ -202,6 +205,80 @@
             "properties": {
                 "version": {
                     "$ref": "#/definitions/version-property"
+                },
+                "expansions": {
+                    "$ref": "#/definitions/v2-expansions-property"
+                },
+                "vars": {
+                    "$ref": "#/definitions/v2-vars-property"
+                },
+                "tasks": {
+                    "title": "tasks",
+                    "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                    "type": "object",
+                    "patternProperties": {
+                        ".": {
+                            "title": "task",
+                            "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "object",
+                            "properties": {
+                                "preconditions": {
+                                    "description": "Task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                                    "type": "array",
+                                    "items": {
+                                        "description": "A task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "examples": [
+                                            "test -f .env"
+                                        ]
+                                    }
+                                },
+                                "cmds": {
+                                    "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "command",
+                                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "minLength": 1
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cmd": {
+                                                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                                        "type": "string",
+                                                        "examples": [
+                                                            "echo \"Hello, world!\""
+                                                        ]
+                                                    },
+                                                    "ignore_error": {
+                                                        "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                                                        "type": "boolean",
+                                                        "default": false
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "examples": [
+                                            "echo \"Hello, world!\""
+                                        ]
+                                    }
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "output": {
+                    "$ref": "#/definitions/v2.1-output-property"
+                },
+                "includes": {
+                    "$ref": "#/definitions/v2.2-includes-property"
                 }
             },
             "additionalProperties": false
