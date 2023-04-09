@@ -3,13 +3,40 @@
     "definitions": {
         "version-property": {
             "description": "A syntax version\nhttps://taskfile.dev/usage/#getting-started",
-            "type": "integer",
+            "type": "string",
             "enum": [
-                2,
-                3
+                "2",
+                "2.1",
+                "2.2",
+                "2.6",
+                "3"
             ]
         },
         "v2-properties": {
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/version-property"
+                }
+            },
+            "additionalProperties": false
+        },
+        "v2.1-properties": {
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/version-property"
+                }
+            },
+            "additionalProperties": false
+        },
+        "v2.2-properties": {
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/version-property"
+                }
+            },
+            "additionalProperties": false
+        },
+        "v2.6-properties": {
             "properties": {
                 "version": {
                     "$ref": "#/definitions/version-property"
@@ -34,12 +61,7 @@
     ],
     "properties": {
         "version": {
-            "description": "A syntax version\nhttps://taskfile.dev/usage/#getting-started",
-            "type": "integer",
-            "enum": [
-                2,
-                3
-            ]
+            "$ref": "#/definitions/version-property"
         }
     },
     "allOf": [
@@ -47,7 +69,7 @@
             "if": {
                 "properties": {
                     "version": {
-                        "const": 2
+                        "const": "2"
                     }
                 }
             },
@@ -59,7 +81,43 @@
             "if": {
                 "properties": {
                     "version": {
-                        "const": 3
+                        "const": "2.1"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/v2.1-properties"
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "version": {
+                        "const": "2.2"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/v2.2-properties"
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "version": {
+                        "const": "2.6"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/v2.6-properties"
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "version": {
+                        "const": "3"
                     }
                 }
             },
