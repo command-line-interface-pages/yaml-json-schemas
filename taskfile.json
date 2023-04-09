@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "definitions": {
+        "version-property": {
+            "description": "A syntax version\nhttps://taskfile.dev/usage/#getting-started",
+            "type": "integer",
+            "enum": [
+                2,
+                3
+            ]
+        },
+        "v2-properties": {
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/version-property"
+                }
+            },
+            "additionalProperties": false
+        },
+        "v3-properties": {
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/version-property"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "title": "tasks",
+    "description": "Tasks",
+    "type": "object",
+    "required": [
+        "version"
+    ],
+    "properties": {
+        "version": {
+            "description": "A syntax version\nhttps://taskfile.dev/usage/#getting-started",
+            "type": "integer",
+            "enum": [
+                2,
+                3
+            ]
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "version": {
+                        "const": 2
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/v2-properties"
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "version": {
+                        "const": 3
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/v3-properties"
+            }
+        }
+    ]
+}
