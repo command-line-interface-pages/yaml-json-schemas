@@ -226,7 +226,7 @@
                                     "description": "Task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
                                     "type": "array",
                                     "items": {
-                                        "description": "A task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                                        "description": "A task precondition\nhttps://taskfile.dev/taskfile-versions/#version-26",
                                         "type": "string",
                                         "minLength": 1,
                                         "examples": [
