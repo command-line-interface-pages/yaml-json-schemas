@@ -1,368 +1,658 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "definitions": {
-        "version-property": {
-            "description": "A syntax version\nhttps://taskfile.dev/usage/#getting-started",
-            "type": "string",
-            "enum": [
-                "2",
-                "2.1",
-                "2.2",
-                "2.6",
-                "3"
-            ]
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "version-property": {
+      "description": "A syntax version\nhttps://taskfile.dev/usage/#getting-started",
+      "type": "string",
+      "enum": [
+        "2",
+        "2.1",
+        "2.2",
+        "2.6",
+        "3"
+      ]
+    },
+    "v2-expansions-property": {
+      "description": "An expansion count\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "type": "integer",
+      "minimum": 1,
+      "default": 2
+    },
+    "v2-vars-property": {
+      "title": "variables",
+      "description": "Variables\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "description": "A variable\nhttps://taskfile.dev/taskfile-versions/#version-20",
+          "type": [
+            "boolean",
+            "integer",
+            "null",
+            "number",
+            "string"
+          ],
+          "examples": [
+            "Hello, world!"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2-tasks-property": {
+      "title": "tasks",
+      "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "title": "task",
+          "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-20",
+          "type": "object",
+          "properties": {
+            "cmds": {
+              "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-20",
+              "type": "array",
+              "items": {
+                "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-20",
+                "type": "string",
+                "minLength": 1,
+                "examples": [
+                  "echo \"Hello, world!\""
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2-properties": {
+      "properties": {
+        "version": {
+          "$ref": "#/definitions/version-property"
         },
-        "v2-expansions-property": {
-            "description": "An expansion count\nhttps://taskfile.dev/taskfile-versions/#version-20",
-            "type": "integer",
-            "minimum": 1,
-            "default": 2
+        "expansions": {
+          "$ref": "#/definitions/v2-expansions-property"
         },
-        "v2-vars-property": {
-            "title": "variables",
-            "description": "Variables\nhttps://taskfile.dev/taskfile-versions/#version-20",
-            "type": "object",
-            "patternProperties": {
-                ".": {
-                    "description": "A variable\nhttps://taskfile.dev/taskfile-versions/#version-20",
-                    "type": [
-                        "boolean",
-                        "integer",
-                        "null",
-                        "number",
-                        "string"
+        "vars": {
+          "$ref": "#/definitions/v2-vars-property"
+        },
+        "tasks": {
+          "$ref": "#/definitions/v2-tasks-property"
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2.1-tasks-property": {
+      "title": "tasks",
+      "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "title": "task",
+          "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
+          "type": "object",
+          "properties": {
+            "cmds": {
+              "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
+              "type": "array",
+              "items": {
+                "title": "command",
+                "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cmd": {
+                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                        "type": "string",
+                        "examples": [
+                          "echo \"Hello, world!\""
+                        ]
+                      },
+                      "ignore_error": {
+                        "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
+                  }
+                ],
+                "examples": [
+                  "echo \"Hello, world!\""
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2.1-output-property": {
+      "description": "An output style\nhttps://taskfile.dev/taskfile-versions/#version-21",
+      "type": "string",
+      "enum": [
+        "interleaved",
+        "group",
+        "prefixed"
+      ]
+    },
+    "v2.1-properties": {
+      "properties": {
+        "version": {
+          "$ref": "#/definitions/version-property"
+        },
+        "expansions": {
+          "$ref": "#/definitions/v2-expansions-property"
+        },
+        "vars": {
+          "$ref": "#/definitions/v2-vars-property"
+        },
+        "tasks": {
+          "$ref": "#/definitions/v2.1-tasks-property"
+        },
+        "output": {
+          "$ref": "#/definitions/v2.1-output-property"
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2.2-includes-property": {
+      "title": "includes",
+      "description": "Includes\nhttps://taskfile.dev/taskfile-versions/#version-22",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "description": "A taskfile\nhttps://taskfile.dev/taskfile-versions/#version-22",
+          "type": "string",
+          "examples": [
+            "./documentation"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2.2-properties": {
+      "properties": {
+        "version": {
+          "$ref": "#/definitions/version-property"
+        },
+        "expansions": {
+          "$ref": "#/definitions/v2-expansions-property"
+        },
+        "vars": {
+          "$ref": "#/definitions/v2-vars-property"
+        },
+        "tasks": {
+          "$ref": "#/definitions/v2.1-tasks-property"
+        },
+        "output": {
+          "$ref": "#/definitions/v2.1-output-property"
+        },
+        "includes": {
+          "$ref": "#/definitions/v2.2-includes-property"
+        }
+      },
+      "additionalProperties": false
+    },
+    "v2.6-properties": {
+      "properties": {
+        "version": {
+          "$ref": "#/definitions/version-property"
+        },
+        "expansions": {
+          "$ref": "#/definitions/v2-expansions-property"
+        },
+        "vars": {
+          "$ref": "#/definitions/v2-vars-property"
+        },
+        "tasks": {
+          "title": "tasks",
+          "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
+          "type": "object",
+          "patternProperties": {
+            ".": {
+              "title": "task",
+              "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
+              "type": "object",
+              "properties": {
+                "preconditions": {
+                  "description": "Task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                  "type": "array",
+                  "items": {
+                    "description": "A task precondition\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                    "type": "string",
+                    "minLength": 1,
+                    "examples": [
+                      "test -f .env"
+                    ]
+                  }
+                },
+                "cmds": {
+                  "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                  "type": "array",
+                  "items": {
+                    "title": "command",
+                    "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "cmd": {
+                            "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "string",
+                            "examples": [
+                              "echo \"Hello, world!\""
+                            ]
+                          },
+                          "ignore_error": {
+                            "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      }
                     ],
                     "examples": [
-                        "Hello, world!"
+                      "echo \"Hello, world!\""
                     ]
+                  }
                 }
-            },
-            "additionalProperties": false
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         },
-        "v2-tasks-property": {
-            "title": "tasks",
-            "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-20",
-            "type": "object",
-            "patternProperties": {
-                ".": {
-                    "title": "task",
-                    "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-20",
-                    "type": "object",
-                    "properties": {
-                        "cmds": {
-                            "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-20",
-                            "type": "array",
-                            "items": {
-                                "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-20",
-                                "type": "string",
-                                "minLength": 1,
-                                "examples": [
-                                    "echo \"Hello, world!\""
-                                ]
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
+        "output": {
+          "$ref": "#/definitions/v2.1-output-property"
         },
-        "v2-properties": {
-            "properties": {
-                "version": {
-                    "$ref": "#/definitions/version-property"
+        "includes": {
+          "$ref": "#/definitions/v2.2-includes-property"
+        }
+      },
+      "additionalProperties": false
+    },
+    "v3-env-property": {
+      "title": "variables",
+      "description": "Variables\nhttps://taskfile.dev/usage/#environment-variables",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "description": "A variable\nhttps://taskfile.dev/usage/#environment-variables",
+          "type": [
+            "boolean",
+            "integer",
+            "null",
+            "number",
+            "string"
+          ],
+          "examples": [
+            "Hello, world!"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "v3-dotenv-property": {
+      "description": ".env files\nhttps://taskfile.dev/usage/#env-files",
+      "uniqueItems": true,
+      "items": {
+        "description": "An .env file\nhttps://taskfile.dev/usage/#env-files",
+        "type": "string",
+        "minLength": 1,
+        "examples": [
+          ".env"
+        ]
+      }
+    },
+    "v3-includes-property": {
+      "title": "includes",
+      "description": "Includes\nhttps://taskfile.dev/usage/#including-other-taskfiles",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "title": "include",
+          "description": "A taskfile\nhttps://taskfile.dev/usage/#including-other-taskfiles",
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "examples": [
+                "./documentation"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "taskfile"
+              ],
+              "properties": {
+                "taskfile": {
+                  "description": "A taskfile\nhttps://taskfile.dev/usage/#directory-of-included-taskfile",
+                  "type": "string",
+                  "minLength": 1,
+                  "examples": [
+                    "./docs/Taskfile.yml"
+                  ]
                 },
-                "expansions": {
-                    "$ref": "#/definitions/v2-expansions-property"
+                "dir": {
+                  "description": "A taskfile directory\nhttps://taskfile.dev/usage/#directory-of-included-taskfile",
+                  "type": "string",
+                  "minLength": 1,
+                  "examples": [
+                    "./docs"
+                  ]
+                },
+                "optional": {
+                  "description": "Whether to continue execution if a taskfile is missing\nhttps://taskfile.dev/usage/#optional-includes",
+                  "type": "boolean",
+                  "default": false
+                },
+                "internal": {
+                  "description": "Whether to allow execute a taskfile by user\nhttps://taskfile.dev/usage/#internal-includes",
+                  "type": "boolean",
+                  "default": true
                 },
                 "vars": {
-                    "$ref": "#/definitions/v2-vars-property"
+                  "$ref": "#/definitions/v2-vars-property"
                 },
-                "tasks": {
-                    "$ref": "#/definitions/v2-tasks-property"
-                }
-            },
-            "additionalProperties": false
-        },
-        "v2.1-tasks-property": {
-            "title": "tasks",
-            "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
-            "type": "object",
-            "patternProperties": {
-                ".": {
-                    "title": "task",
-                    "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                    "type": "object",
-                    "properties": {
-                        "cmds": {
-                            "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                            "type": "array",
-                            "items": {
-                                "title": "command",
-                                "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                "oneOf": [
-                                    {
-                                        "type": "string",
-                                        "minLength": 1
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "cmd": {
-                                                "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                                "type": "string",
-                                                "examples": [
-                                                    "echo \"Hello, world!\""
-                                                ]
-                                            },
-                                            "ignore_error": {
-                                                "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                                "type": "boolean",
-                                                "default": false
-                                            }
-                                        }
-                                    }
-                                ],
-                                "examples": [
-                                    "echo \"Hello, world!\""
-                                ]
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
-        },
-        "v2.1-output-property": {
-            "description": "An output style\nhttps://taskfile.dev/taskfile-versions/#version-21",
-            "type": "string",
-            "enum": [
-                "interleaved",
-                "group",
-                "prefixed"
-            ]
-        },
-        "v2.1-properties": {
-            "properties": {
-                "version": {
-                    "$ref": "#/definitions/version-property"
-                },
-                "expansions": {
-                    "$ref": "#/definitions/v2-expansions-property"
-                },
-                "vars": {
-                    "$ref": "#/definitions/v2-vars-property"
-                },
-                "tasks": {
-                    "$ref": "#/definitions/v2.1-tasks-property"
-                },
-                "output": {
-                    "$ref": "#/definitions/v2.1-output-property"
-                }
-            },
-            "additionalProperties": false
-        },
-        "v2.2-includes-property": {
-            "title": "includes",
-            "description": "Includes\nhttps://taskfile.dev/taskfile-versions/#version-22",
-            "type": "object",
-            "patternProperties": {
-                ".": {
-                    "description": "An include\nhttps://taskfile.dev/taskfile-versions/#version-22",
+                "aliases": {
+                  "description": "Namespace aliases\nhttps://taskfile.dev/usage/#namespace-aliases",
+                  "type": "array",
+                  "items": {
+                    "description": "A namespace alias\nhttps://taskfile.dev/usage/#namespace-aliases",
                     "type": "string",
+                    "minLength": 1,
                     "examples": [
-                        "./documentation"
+                      "gen"
                     ]
+                  }
                 }
-            },
-            "additionalProperties": false
-        },
-        "v2.2-properties": {
-            "properties": {
-                "version": {
-                    "$ref": "#/definitions/version-property"
-                },
-                "expansions": {
-                    "$ref": "#/definitions/v2-expansions-property"
-                },
-                "vars": {
-                    "$ref": "#/definitions/v2-vars-property"
-                },
-                "tasks": {
-                    "$ref": "#/definitions/v2.1-tasks-property"
-                },
-                "output": {
-                    "$ref": "#/definitions/v2.1-output-property"
-                },
-                "includes": {
-                    "$ref": "#/definitions/v2.2-includes-property"
-                }
-            },
-            "additionalProperties": false
-        },
-        "v2.6-properties": {
-            "properties": {
-                "version": {
-                    "$ref": "#/definitions/version-property"
-                },
-                "expansions": {
-                    "$ref": "#/definitions/v2-expansions-property"
-                },
-                "vars": {
-                    "$ref": "#/definitions/v2-vars-property"
-                },
-                "tasks": {
-                    "title": "tasks",
-                    "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                    "type": "object",
-                    "patternProperties": {
-                        ".": {
-                            "title": "task",
-                            "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                            "type": "object",
-                            "properties": {
-                                "preconditions": {
-                                    "description": "Task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
-                                    "type": "array",
-                                    "items": {
-                                        "description": "A task precondition\nhttps://taskfile.dev/taskfile-versions/#version-26",
-                                        "type": "string",
-                                        "minLength": 1,
-                                        "examples": [
-                                            "test -f .env"
-                                        ]
-                                    }
-                                },
-                                "cmds": {
-                                    "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                    "type": "array",
-                                    "items": {
-                                        "title": "command",
-                                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                        "oneOf": [
-                                            {
-                                                "type": "string",
-                                                "minLength": 1
-                                            },
-                                            {
-                                                "type": "object",
-                                                "properties": {
-                                                    "cmd": {
-                                                        "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                                        "type": "string",
-                                                        "examples": [
-                                                            "echo \"Hello, world!\""
-                                                        ]
-                                                    },
-                                                    "ignore_error": {
-                                                        "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
-                                                        "type": "boolean",
-                                                        "default": false
-                                                    }
-                                                }
-                                            }
-                                        ],
-                                        "examples": [
-                                            "echo \"Hello, world!\""
-                                        ]
-                                    }
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "output": {
-                    "$ref": "#/definitions/v2.1-output-property"
-                },
-                "includes": {
-                    "$ref": "#/definitions/v2.2-includes-property"
-                }
-            },
-            "additionalProperties": false
-        },
-        "v3-properties": {
-            "properties": {
-                "version": {
-                    "$ref": "#/definitions/version-property"
-                }
-            },
-            "additionalProperties": false
+              },
+              "additionalProperties": false
+            }
+          ]
         }
+      },
+      "additionalProperties": false
     },
-    "title": "tasks",
-    "description": "Tasks",
-    "type": "object",
-    "required": [
-        "version"
-    ],
-    "properties": {
+    "v3-platforms-property": {
+      "description": "Task platforms to run in on\nhttps://taskfile.dev/usage/#platform-specific-tasks-and-commands",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "description": "A task platform to run task on\nhttps://taskfile.dev/usage/#platform-specific-tasks-and-commands",
+        "type": "string",
+        "enum": [
+          "386",
+          "aix",
+          "amd64p32",
+          "amd64",
+          "android",
+          "arm64be",
+          "arm64",
+          "armbe",
+          "arm",
+          "darwin",
+          "dragonfly",
+          "freebsd",
+          "hurd",
+          "illumos",
+          "ios",
+          "js",
+          "linux",
+          "loong64",
+          "mips64le",
+          "mips64p32le",
+          "mips64p32",
+          "mips64",
+          "mipsle",
+          "mips",
+          "nacl",
+          "netbsd",
+          "openbsd",
+          "plan9",
+          "ppc64le",
+          "ppc64",
+          "ppc",
+          "riscv64",
+          "riscv",
+          "s390",
+          "s390x",
+          "solaris",
+          "sparc64",
+          "sparc",
+          "wasip1",
+          "wasm",
+          "windows",
+          "zos"
+        ]
+      }
+    },
+    "v3-properties": {
+      "properties": {
         "version": {
-            "$ref": "#/definitions/version-property"
+          "$ref": "#/definitions/version-property"
+        },
+        "expansions": {
+          "$ref": "#/definitions/v2-expansions-property"
+        },
+        "env": {
+          "$ref": "#/definitions/v3-env-property"
+        },
+        "dotenv": {
+          "$ref": "#/definitions/v3-dotenv-property"
+        },
+        "tasks": {
+          "title": "tasks",
+          "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-21",
+          "type": "object",
+          "patternProperties": {
+            ".": {
+              "title": "task",
+              "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
+              "type": "object",
+              "properties": {
+                "preconditions": {
+                  "description": "Task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                  "type": "array",
+                  "items": {
+                    "description": "A task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                    "type": "string",
+                    "minLength": 1,
+                    "examples": [
+                      "test -f .env"
+                    ]
+                  }
+                },
+                "cmds": {
+                  "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                  "type": "array",
+                  "items": {
+                    "title": "command",
+                    "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "cmd": {
+                            "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "string",
+                            "examples": [
+                              "echo \"Hello, world!\""
+                            ]
+                          },
+                          "ignore_error": {
+                            "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "platforms": {
+                            "$ref": "#/definitions/v3-platforms-property"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ],
+                    "examples": [
+                      "echo \"Hello, world!\""
+                    ]
+                  }
+                },
+                "dir": {
+                  "description": "A directory to run commands from\nhttps://taskfile.dev/usage/#running-a-taskfile-from-a-subdirectory",
+                  "type": "string",
+                  "minLength": 1,
+                  "examples": [
+                    "{{.USER_WORKING_DIR}}"
+                  ]
+                },
+                "env": {
+                  "$ref": "#/definitions/v3-env-property"
+                },
+                "dotenv": {
+                  "$ref": "#/definitions/v3-dotenv-property"
+                },
+                "deps": {
+                  "description": "Task dependencies\nhttps://taskfile.dev/usage/#task-dependencies",
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "title": "dependency",
+                    "description": "A task dependency\nhttps://taskfile.dev/usage/#task-dependencies",
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "examples": [
+                          "assets"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "task": {
+                            "description": "A task\nhttps://taskfile.dev/usage/#task-dependencies",
+                            "type": "string",
+                            "minLength": 1,
+                            "examples": [
+                              "assets"
+                            ]
+                          },
+                          "vars": {
+                            "$ref": "#/definitions/v2-vars-property"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "platforms": {
+                  "$ref": "#/definitions/v3-platforms-property"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "$ref": "#/definitions/v2.1-output-property"
+        },
+        "includes": {
+          "$ref": "#/definitions/v3-includes-property"
         }
+      },
+      "additionalProperties": false
+    }
+  },
+  "title": "tasks",
+  "description": "Tasks",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "$ref": "#/definitions/version-property"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": "2"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/v2-properties"
+      }
     },
-    "allOf": [
-        {
-            "if": {
-                "properties": {
-                    "version": {
-                        "const": "2"
-                    }
-                }
-            },
-            "then": {
-                "$ref": "#/definitions/v2-properties"
-            }
-        },
-        {
-            "if": {
-                "properties": {
-                    "version": {
-                        "const": "2.1"
-                    }
-                }
-            },
-            "then": {
-                "$ref": "#/definitions/v2.1-properties"
-            }
-        },
-        {
-            "if": {
-                "properties": {
-                    "version": {
-                        "const": "2.2"
-                    }
-                }
-            },
-            "then": {
-                "$ref": "#/definitions/v2.2-properties"
-            }
-        },
-        {
-            "if": {
-                "properties": {
-                    "version": {
-                        "const": "2.6"
-                    }
-                }
-            },
-            "then": {
-                "$ref": "#/definitions/v2.6-properties"
-            }
-        },
-        {
-            "if": {
-                "properties": {
-                    "version": {
-                        "const": "3"
-                    }
-                }
-            },
-            "then": {
-                "$ref": "#/definitions/v3-properties"
-            }
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": "2.1"
+          }
         }
-    ]
+      },
+      "then": {
+        "$ref": "#/definitions/v2.1-properties"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": "2.2"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/v2.2-properties"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": "2.6"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/v2.6-properties"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": "3"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/v3-properties"
+      }
+    }
+  ]
 }
