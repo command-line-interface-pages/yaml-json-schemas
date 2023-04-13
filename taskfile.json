@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "definitions": {
     "version-property": {
+      "title": "version",
       "description": "A syntax version for the current file\nhttps://taskfile.dev/usage/#getting-started",
       "type": "string",
       "enum": [
@@ -13,14 +14,15 @@
       ]
     },
     "v2-expansions-property": {
-      "description": "An expansion count\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "title": "expansions",
+      "description": "An expansion count for the current file\nhttps://taskfile.dev/taskfile-versions/#version-20",
       "type": "integer",
       "minimum": 1,
       "default": 2
     },
     "v2-vars-property": {
       "title": "variables",
-      "description": "Variables\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "description": "Variables for the current file\nhttps://taskfile.dev/taskfile-versions/#version-20",
       "type": "object",
       "patternProperties": {
         ".": {
@@ -33,7 +35,8 @@
             "string"
           ],
           "examples": [
-            "Hello, world!"
+            "FIRST-NAME",
+            "{{.FIRST-NAME}}"
           ]
         }
       },
@@ -41,19 +44,20 @@
     },
     "v2-tasks-property": {
       "title": "tasks",
-      "description": "Tasks\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "description": "Tasks for the current file\nhttps://taskfile.dev/taskfile-versions/#version-20",
       "type": "object",
       "patternProperties": {
         ".": {
           "title": "task",
-          "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-20",
+          "description": "A task for the current file\nhttps://taskfile.dev/taskfile-versions/#version-20",
           "type": "object",
           "properties": {
             "cmds": {
-              "description": "Task commands\nhttps://taskfile.dev/taskfile-versions/#version-20",
+              "title": "commands",
+              "description": "Commands for the current task\nhttps://taskfile.dev/taskfile-versions/#version-20",
               "type": "array",
               "items": {
-                "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-20",
+                "description": "A command for the current task\nhttps://taskfile.dev/taskfile-versions/#version-20",
                 "type": "string",
                 "minLength": 1,
                 "examples": [
@@ -471,7 +475,9 @@
                   "description": "A command\nhttps://taskfile.dev/usage/#dynamic-variables",
                   "type": "string",
                   "minLength": 1,
-                  "examples": ["git log -n 1 --format=%h"]
+                  "examples": [
+                    "git log -n 1 --format=%h"
+                  ]
                 }
               }
             }
