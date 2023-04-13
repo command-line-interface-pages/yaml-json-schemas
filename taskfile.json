@@ -440,6 +440,46 @@
         ]
       }
     },
+    "v3-vars-property": {
+      "title": "variables",
+      "description": "Variables\nhttps://taskfile.dev/taskfile-versions/#version-20",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "description": "A variable\nhttps://taskfile.dev/taskfile-versions/#version-20",
+          "oneOf": [
+            {
+              "type": [
+                "boolean",
+                "integer",
+                "null",
+                "number",
+                "string"
+              ],
+              "examples": [
+                "Hello, world!"
+              ]
+            },
+            {
+              "title": "variable",
+              "type": "object",
+              "required": [
+                "sh"
+              ],
+              "properties": {
+                "sh": {
+                  "description": "A command\nhttps://taskfile.dev/usage/#dynamic-variables",
+                  "type": "string",
+                  "minLength": 1,
+                  "examples": ["git log -n 1 --format=%h"]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
     "v3-properties": {
       "properties": {
         "version": {
@@ -468,7 +508,7 @@
                   "description": "Task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
                   "type": "array",
                   "items": {
-                    "description": "A task preconditions\nhttps://taskfile.dev/taskfile-versions/#version-26",
+                    "description": "A task precondition\nhttps://taskfile.dev/taskfile-versions/#version-26",
                     "type": "string",
                     "minLength": 1,
                     "examples": [
@@ -534,7 +574,7 @@
                             "$ref": "#/definitions/v3-platforms-property"
                           },
                           "vars": {
-                            "$ref": "#/definitions/v2-vars-property"
+                            "$ref": "#/definitions/v3-vars-property"
                           }
                         },
                         "additionalProperties": false
@@ -586,7 +626,7 @@
                             ]
                           },
                           "vars": {
-                            "$ref": "#/definitions/v2-vars-property"
+                            "$ref": "#/definitions/v3-vars-property"
                           }
                         },
                         "additionalProperties": false
@@ -598,7 +638,62 @@
                   "$ref": "#/definitions/v3-platforms-property"
                 },
                 "vars": {
-                  "$ref": "#/definitions/v2-vars-property"
+                  "$ref": "#/definitions/v3-vars-property"
+                },
+                "sources": {
+                  "description": "Build sources\nhttps://taskfile.dev/usage/#by-fingerprinting-locally-generated-files-and-their-sources",
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "description": "A build source\nhttps://taskfile.dev/usage/#by-fingerprinting-locally-generated-files-and-their-sources",
+                    "type": "string",
+                    "minLength": 1,
+                    "examples": [
+                      "src/js/**/*.js"
+                    ]
+                  }
+                },
+                "generates": {
+                  "description": "Build outputs\nhttps://taskfile.dev/usage/#by-fingerprinting-locally-generated-files-and-their-sources",
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "description": "A build output\nhttps://taskfile.dev/usage/#by-fingerprinting-locally-generated-files-and-their-sources",
+                    "type": "string",
+                    "minLength": 1,
+                    "examples": [
+                      "public/bundle.css"
+                    ]
+                  }
+                },
+                "method": {
+                  "description": "An automatic comparison method\nhttps://taskfile.dev/usage/#by-fingerprinting-locally-generated-files-and-their-sources",
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "checksum",
+                    "timestamp"
+                  ]
+                },
+                "status": {
+                  "description": "Manual comparison commands\nhttps://taskfile.dev/usage/#using-programmatic-checks-to-indicate-a-task-is-up-to-date",
+                  "type": "array",
+                  "items": {
+                    "description": "A manual comparison command\nhttps://taskfile.dev/usage/#using-programmatic-checks-to-indicate-a-task-is-up-to-date",
+                    "type": "string",
+                    "examples": [
+                      "test -d directory"
+                    ]
+                  }
+                },
+                "run": {
+                  "description": "A run condition\nhttps://taskfile.dev/usage/#limiting-when-tasks-run",
+                  "type": "string",
+                  "enum": [
+                    "always",
+                    "once",
+                    "when_changed"
+                  ]
                 }
               },
               "additionalProperties": false
@@ -611,6 +706,9 @@
         },
         "includes": {
           "$ref": "#/definitions/v3-includes-property"
+        },
+        "vars": {
+          "$ref": "#/definitions/v3-vars-property"
         }
       },
       "additionalProperties": false
