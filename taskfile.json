@@ -510,6 +510,34 @@
                           }
                         },
                         "additionalProperties": false
+                      },
+                      {
+                        "title": "task",
+                        "type": "object",
+                        "required": [
+                          "task"
+                        ],
+                        "properties": {
+                          "task": {
+                            "description": "A task\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "string",
+                            "examples": [
+                              "echo \"Hello, world!\""
+                            ]
+                          },
+                          "ignore_error": {
+                            "description": "Whether ignore an error\nhttps://taskfile.dev/taskfile-versions/#version-21",
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "platforms": {
+                            "$ref": "#/definitions/v3-platforms-property"
+                          },
+                          "vars": {
+                            "$ref": "#/definitions/v2-vars-property"
+                          }
+                        },
+                        "additionalProperties": false
                       }
                     ],
                     "examples": [
@@ -568,6 +596,9 @@
                 },
                 "platforms": {
                   "$ref": "#/definitions/v3-platforms-property"
+                },
+                "vars": {
+                  "$ref": "#/definitions/v2-vars-property"
                 }
               },
               "additionalProperties": false
