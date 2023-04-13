@@ -489,6 +489,9 @@
                       },
                       {
                         "type": "object",
+                        "required": [
+                          "cmd"
+                        ],
                         "properties": {
                           "cmd": {
                             "description": "A task command\nhttps://taskfile.dev/taskfile-versions/#version-21",
